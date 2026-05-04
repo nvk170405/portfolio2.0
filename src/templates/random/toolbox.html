@@ -206,6 +206,68 @@
         min-height: 0;
       }
     }
+
+    .toolbox-touchpad {
+      display: none;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 50;
+      padding: 0.55rem 0.55rem calc(0.55rem + env(safe-area-inset-bottom, 0px));
+      background: color-mix(in srgb, var(--site-panel) 96%, transparent);
+      border-top: 1px solid var(--site-border);
+      box-shadow: 0 -6px 0 var(--site-shadow);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.4rem;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .toolbox-touchpad.is-visible {
+      display: grid;
+    }
+
+    .toolbox-touch-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 2.6rem;
+      border: 1px solid var(--site-border-strong);
+      background: var(--site-panel-soft);
+      box-shadow: 3px 3px 0 var(--site-shadow);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: inherit;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .toolbox-touch-btn:active {
+      background: var(--site-text);
+      color: var(--site-panel);
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--site-shadow);
+    }
+
+    .toolbox-touch-btn .arrow {
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+
+    @media (hover: none), (pointer: coarse), (max-width: 640px) {
+      .toolbox-touchpad {
+        display: grid;
+      }
+
+      body {
+        padding-bottom: calc(4.2rem + env(safe-area-inset-bottom, 0px));
+      }
+    }
   </style>
 {% endblock %}
 
@@ -310,6 +372,24 @@
         </div>
       </div>
     {% endcall %}
+  </div>
+
+  <div class="toolbox-touchpad" id="toolbox-touchpad" aria-label="tetris controls">
+    <button type="button" class="toolbox-touch-btn" data-action="left" aria-label="move left">
+      <span class="arrow">&#9664;</span>
+    </button>
+    <button type="button" class="toolbox-touch-btn" data-action="rotate" aria-label="rotate">
+      <span class="arrow">&#8635;</span>
+    </button>
+    <button type="button" class="toolbox-touch-btn" data-action="down" aria-label="soft drop">
+      <span class="arrow">&#9660;</span>
+    </button>
+    <button type="button" class="toolbox-touch-btn" data-action="right" aria-label="move right">
+      <span class="arrow">&#9654;</span>
+    </button>
+    <button type="button" class="toolbox-touch-btn" data-action="drop" aria-label="hard drop">
+      drop
+    </button>
   </div>
 {% endblock %}
 
@@ -581,6 +661,13 @@
 
         if (hasLogo) {
           const size = Math.max(18, Math.min(30, Math.min(bounds.w, bounds.h) * 0.34));
+          const pad = 2;
+          ctx.save();
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(centerX - size / 2 - pad, centerY - 22 - pad, size + pad * 2, size + pad * 2);
+          ctx.strokeStyle = "rgba(0, 0, 0, 0.18)";
+          ctx.strokeRect(centerX - size / 2 - pad + 0.5, centerY - 22 - pad + 0.5, size + pad * 2 - 1, size + pad * 2 - 1);
+          ctx.restore();
           ctx.drawImage(logo, centerX - size / 2, centerY - 22, size, size);
         }
 
@@ -789,6 +876,71 @@
           loadLogo(item.logo);
         }
       });
+
+      const touchpad = document.getElementById("toolbox-touchpad");
+      if (touchpad) {
+        const actions = {
+          left: () => move(-1, 0),
+          right: () => move(1, 0),
+          down: () => {
+            if (move(0, 1)) {
+              score += 1;
+              scoreEl.textContent = String(score);
+            }
+          },
+          rotate: () => rotateCurrent(),
+          drop: () => hardDrop()
+        };
+        const repeatable = new Set(["left", "right", "down"]);
+        const heldTimers = new Map();
+
+        function fire(action) {
+          if (status !== "playing") {
+            return;
+          }
+          actions[action]();
+        }
+
+        function startHold(btn, action) {
+          fire(action);
+          if (!repeatable.has(action)) {
+            return;
+          }
+          let interval;
+          const delay = window.setTimeout(() => {
+            interval = window.setInterval(() => fire(action), 80);
+            heldTimers.set(btn, { delay: null, interval });
+          }, 220);
+          heldTimers.set(btn, { delay, interval: null });
+        }
+
+        function endHold(btn) {
+          const handle = heldTimers.get(btn);
+          if (!handle) {
+            return;
+          }
+          if (handle.delay) {
+            window.clearTimeout(handle.delay);
+          }
+          if (handle.interval) {
+            window.clearInterval(handle.interval);
+          }
+          heldTimers.delete(btn);
+        }
+
+        touchpad.querySelectorAll(".toolbox-touch-btn").forEach((btn) => {
+          const action = btn.dataset.action;
+          btn.addEventListener("pointerdown", (event) => {
+            event.preventDefault();
+            btn.setPointerCapture(event.pointerId);
+            startHold(btn, action);
+          });
+          ["pointerup", "pointercancel", "pointerleave"].forEach((evt) => {
+            btn.addEventListener(evt, () => endHold(btn));
+          });
+          btn.addEventListener("contextmenu", (event) => event.preventDefault());
+        });
+      }
 
       reset();
       requestAnimationFrame(tick);

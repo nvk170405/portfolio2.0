@@ -10,6 +10,10 @@
       box-shadow: 6px 6px 0 var(--site-shadow);
     }
 
+    .music-stage-wrap {
+      position: relative;
+    }
+
     .music-stage {
       position: relative;
       aspect-ratio: 16 / 9;
@@ -373,6 +377,101 @@
         gap: 0.5rem;
       }
     }
+
+    @media (max-width: 640px) {
+      .music-stage {
+        min-height: 260px;
+      }
+
+      .music-hud {
+        top: 0.4rem;
+        left: 0.4rem;
+        padding: 0.35rem 0.45rem;
+        font-size: 0.6rem;
+        line-height: 1.25;
+        max-width: calc(100% - 0.8rem);
+      }
+
+      .music-hud .music-hud-tip {
+        display: none;
+      }
+
+      .music-speed {
+        margin-top: 0.3rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .music-speed label {
+        white-space: nowrap;
+      }
+
+      .music-speed input {
+        width: 80px;
+      }
+
+      .music-hover {
+        display: none;
+      }
+
+      .music-detail {
+        right: 0.4rem;
+        bottom: 0.4rem;
+        left: 0.4rem;
+        width: auto;
+        padding: 0.55rem 0.6rem;
+        gap: 0.5rem;
+      }
+
+      .music-detail-title {
+        font-size: 0.88rem;
+      }
+
+      .music-detail-label {
+        font-size: 0.62rem;
+      }
+
+      .music-detail-body {
+        gap: 0.55rem;
+      }
+
+      .music-detail-cover {
+        width: 56px;
+        height: 56px;
+        flex-basis: 56px;
+      }
+
+      .music-detail-copy {
+        font-size: 0.74rem;
+        line-height: 1.35;
+      }
+
+      .music-detail-close {
+        width: 1.5rem;
+        height: 1.5rem;
+        font-size: 0.78rem;
+      }
+
+      .music-shelf {
+        padding: 0.8rem;
+      }
+
+      .music-vibe-headliners {
+        font-size: 1.05rem;
+      }
+
+      .music-vibe-row {
+        font-size: 0.78rem;
+        line-height: 1.45;
+      }
+    }
+
+    @media (hover: none), (pointer: coarse) {
+      .music-hover {
+        display: none;
+      }
+    }
   </style>
 {% endblock %}
 
@@ -380,43 +479,45 @@
   <div class="flex flex-col gap-4">
     {% call fieldset("cat ~/random/music.md") %}
       <div class="music-shell">
-        <div class="music-stage" id="music-stage">
-          <div class="music-pause-overlay" id="music-pause-overlay">
-            <button type="button" class="music-pause-button" id="music-pause-button">
-              resume playback
-            </button>
-          </div>
-
-          <div class="music-hud">
-            <div>music.exe</div>
-            <div>click stage: pause/resume</div>
-            <div>corner hits: <span id="music-corners">0</span></div>
-            <div class="music-speed">
-              <label for="music-speed-slider">
-                speed: <span id="music-speed-value">0.55x</span>
-              </label>
-              <input
-                id="music-speed-slider"
-                type="range"
-                min="0.2"
-                max="1.2"
-                step="0.05"
-                value="0.55"
-              />
+        <div class="music-stage-wrap">
+          <div class="music-stage" id="music-stage">
+            <div class="music-pause-overlay" id="music-pause-overlay">
+              <button type="button" class="music-pause-button" id="music-pause-button">
+                resume playback
+              </button>
             </div>
-          </div>
 
-          <div class="music-hover">
-            <img
-              class="music-hover-art"
-              id="music-hover-art"
-              src="https://cdn-images.dzcdn.net/images/cover/56bdb7a86a27fadb96332c0c8f1b8e81/1000x1000-000000-80-0-0.jpg"
-              alt="Views cover"
-            />
-            <div class="music-hover-copy">
-              <p class="music-hover-label">now hovering</p>
-              <p class="music-hover-title" id="music-hover-title">Views</p>
-              <p class="music-hover-artist" id="music-hover-artist">Drake</p>
+            <div class="music-hud">
+              <div>music.exe</div>
+              <div class="music-hud-tip">tap covers: details</div>
+              <div>corners: <span id="music-corners">0</span></div>
+              <div class="music-speed">
+                <label for="music-speed-slider">
+                  speed: <span id="music-speed-value">0.55x</span>
+                </label>
+                <input
+                  id="music-speed-slider"
+                  type="range"
+                  min="0.2"
+                  max="1.2"
+                  step="0.05"
+                  value="0.55"
+                />
+              </div>
+            </div>
+
+            <div class="music-hover">
+              <img
+                class="music-hover-art"
+                id="music-hover-art"
+                src="https://cdn-images.dzcdn.net/images/cover/56bdb7a86a27fadb96332c0c8f1b8e81/1000x1000-000000-80-0-0.jpg"
+                alt="Views cover"
+              />
+              <div class="music-hover-copy">
+                <p class="music-hover-label">now hovering</p>
+                <p class="music-hover-title" id="music-hover-title">Views</p>
+                <p class="music-hover-artist" id="music-hover-artist">Drake</p>
+              </div>
             </div>
           </div>
 
@@ -742,6 +843,7 @@
       const pauseButton = document.getElementById("music-pause-button");
       const speedSlider = document.getElementById("music-speed-slider");
       const speedValue = document.getElementById("music-speed-value");
+      const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
       const vibes = [
         {
           name: "LOCKED IN",
@@ -897,11 +999,14 @@
 
         const width = stage.clientWidth;
         const height = stage.clientHeight;
-        const compact = width < 640;
-        const size = compact ? 64 : 78;
-        const gap = compact ? 12 : 16;
-        const usableWidth = Math.max(width - 48, size);
-        const columns = Math.max(3, Math.floor(usableWidth / (size + gap)));
+        const phone = width < 640;
+        const compact = width < 900;
+        const size = phone ? 44 : compact ? 64 : 78;
+        const gap = phone ? 6 : compact ? 12 : 16;
+        const margin = phone ? 6 : 16;
+        const usableWidth = Math.max(width - margin * 2, size);
+        const usableHeight = Math.max(height - margin * 2, size);
+        const columns = Math.max(2, Math.floor((usableWidth + gap) / (size + gap)));
 
         albums.forEach((album, index) => {
           const node = document.createElement("button");
@@ -913,8 +1018,10 @@
           const col = index % columns;
           const row = Math.floor(index / columns);
           const rowOffset = row % 2 === 0 ? 0 : Math.floor(size * 0.38);
-          const x = 24 + col * (size + gap) + rowOffset;
-          const y = 24 + row * (size + gap);
+          let x = margin + col * (size + gap) + rowOffset;
+          let y = margin + row * (size + gap);
+          x = Math.max(0, Math.min(x, width - size));
+          y = Math.max(0, Math.min(y, height - size));
           const angle = (index / albums.length) * Math.PI * 2 + Math.PI / 6;
           const dx = Math.cos(angle) || 1;
           const dy = Math.sin(angle) || 1;
@@ -924,10 +1031,12 @@
           node.style.height = `${size}px`;
           node.style.transform = `translate(${x}px, ${y}px)`;
 
-          node.addEventListener("mouseenter", (event) => {
-            event.stopPropagation();
-            updateHover(album);
-          });
+          if (canHover) {
+            node.addEventListener("mouseenter", (event) => {
+              event.stopPropagation();
+              updateHover(album);
+            });
+          }
 
           node.addEventListener("focus", () => updateHover(album));
 
@@ -990,7 +1099,7 @@
       function handleResize() {
         const width = stage.clientWidth;
         const height = stage.clientHeight;
-        const size = width < 640 ? 64 : 78;
+        const size = width < 640 ? 44 : width < 900 ? 64 : 78;
 
         sprites.forEach((sprite) => {
           sprite.size = size;

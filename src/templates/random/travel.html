@@ -10,6 +10,10 @@
       box-shadow: 6px 6px 0 var(--site-shadow);
     }
 
+    .travel-stage-wrap {
+      position: relative;
+    }
+
     .travel-stage {
       position: relative;
       min-height: 420px;
@@ -280,6 +284,60 @@
         height: 150px;
       }
     }
+
+    @media (max-width: 640px) {
+      .travel-stage {
+        min-height: 250px;
+        padding: 0.35rem;
+      }
+
+      .globe-canvas {
+        width: min(78vw, 320px);
+      }
+
+      .travel-hud {
+        display: none;
+      }
+
+      .travel-legend {
+        left: 0.55rem;
+        bottom: 0.55rem;
+        padding: 0.45rem 0.55rem;
+        gap: 0.3rem;
+        font-size: 0.64rem;
+      }
+
+      .travel-marker-card {
+        position: static;
+        width: auto;
+        margin: 0.75rem;
+        box-shadow: 4px 4px 0 var(--site-shadow);
+      }
+
+      .travel-marker-card img {
+        height: 132px;
+      }
+
+      .travel-track {
+        gap: 0.7rem;
+        padding: 0.7rem;
+        animation-duration: 48s;
+      }
+
+      .travel-card {
+        width: 180px;
+        padding: 0.55rem;
+      }
+
+      .travel-card img {
+        height: 118px;
+      }
+
+      .travel-card p {
+        margin-top: 0.45rem;
+        font-size: 0.8rem;
+      }
+    }
   </style>
 {% endblock %}
 
@@ -287,30 +345,32 @@
   <div class="flex flex-col gap-4">
     {% call fieldset("cat ~/random/travel.md") %}
       <div class="travel-shell">
-        <div class="travel-stage" id="travel-globe-wrap">
-          <canvas
-            id="travel-globe"
-            class="globe-canvas"
-            width="420"
-            height="420"
-          ></canvas>
+        <div class="travel-stage-wrap">
+          <div class="travel-stage" id="travel-globe-wrap">
+            <canvas
+              id="travel-globe"
+              class="globe-canvas"
+              width="420"
+              height="420"
+            ></canvas>
 
-          <div class="travel-tooltip" id="travel-tooltip"></div>
+            <div class="travel-tooltip" id="travel-tooltip"></div>
 
-          <div class="travel-hud">
-            <div>travel.exe</div>
-            <div>drag to rotate</div>
-            <div>wheel or pinch to zoom</div>
-          </div>
-
-          <div class="travel-legend">
-            <div class="travel-legend-row">
-              <span class="legend-check">v</span>
-              <span>been there</span>
+            <div class="travel-hud">
+              <div>travel.exe</div>
+              <div>drag to rotate</div>
+              <div>wheel or pinch to zoom</div>
             </div>
-            <div class="travel-legend-row">
-              <span class="legend-pin"></span>
-              <span>bucket list</span>
+
+            <div class="travel-legend">
+              <div class="travel-legend-row">
+                <span class="legend-check">v</span>
+                <span>been there</span>
+              </div>
+              <div class="travel-legend-row">
+                <span class="legend-pin"></span>
+                <span>bucket list</span>
+              </div>
             </div>
           </div>
 

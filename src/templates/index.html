@@ -259,6 +259,48 @@
       bottom: auto;
     }
 
+    .project-row {
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+    }
+
+    .project-thumb {
+      width: 96px;
+      height: 56px;
+      flex: 0 0 96px;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      object-fit: cover;
+      align-self: flex-start;
+    }
+
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 1.75rem;
+      padding: 0 0.65rem;
+      border: 1px solid var(--site-border-strong);
+      background: var(--site-panel);
+      color: inherit;
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: 3px 3px 0 var(--site-shadow-strong);
+    }
+
+    .project-link:hover {
+      background: var(--site-text);
+      color: var(--site-panel);
+    }
+
     @media (max-width: 900px) {
       .home-grid-4 {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -268,6 +310,64 @@
     @media (max-width: 640px) {
       .home-grid-4 {
         grid-template-columns: 1fr;
+      }
+
+      .project-row {
+        gap: 0.55rem;
+      }
+
+      .project-thumb {
+        width: 88px;
+        height: 52px;
+        flex-basis: 88px;
+      }
+
+      .project-copy {
+        min-width: 0;
+      }
+
+      .project-copy p {
+        word-break: break-word;
+      }
+
+      .project-link {
+        height: 1.6rem;
+        padding: 0 0.55rem;
+        font-size: 0.68rem;
+        box-shadow: 2px 2px 0 var(--site-shadow);
+      }
+    }
+
+    .friends-list .friend-link {
+      position: relative;
+    }
+
+    .friend-note {
+      position: fixed;
+      z-index: 60;
+      max-width: 240px;
+      padding: 0.4rem 0.55rem;
+      background: var(--site-panel);
+      border: 1px solid var(--site-border-strong);
+      box-shadow: 3px 3px 0 var(--site-shadow);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.78rem;
+      line-height: 1.35;
+      color: var(--site-text);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 100ms ease, transform 100ms ease;
+    }
+
+    .friend-note.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (hover: none), (pointer: coarse) {
+      .friend-note {
+        display: none;
       }
     }
   </style>
@@ -435,7 +535,7 @@
                     data-open-gallery="adtran"
                   >
                     pictures!
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -616,14 +716,14 @@
         <div class="flex flex-col gap-4 mt-4">
           <article class="project-card border border-black/30 dark:border-white/25 p-2">
             <span class="favorite-star" aria-hidden="true"></span>
-            <div class="flex flex-col sm:flex-row gap-3 items-start">
+            <div class="project-row">
               <img
                 src="/assets/projects/datamsith.png"
                 alt="DataSmith project thumbnail"
-                class="w-full sm:w-auto h-24 sm:h-12 object-cover border border-black/30 dark:border-white/25 shrink-0 self-start"
+                class="project-thumb"
                 loading="lazy"
               />
-              <div class="flex flex-col gap-2 min-w-0 justify-start">
+              <div class="project-copy flex flex-col gap-2 min-w-0 justify-start">
                 <div>
                 <p class="font-semibold text-base m-0">DataSmith</p>
                 <p class="text-sm mt-1 m-0">
@@ -631,12 +731,12 @@
                   into ML-ready data with quality scoring and dashboards.
                 </p>
               </div>
-              <div class="flex flex-wrap gap-2">
+              <div class="project-links">
                 <a
                   href="https://devpost.com/software/67-industries"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="inline-flex items-center justify-center rounded-none outline outline-1 outline-black dark:outline-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black px-3 h-8 text-sm font-bold shadow-[3px_3px_0px_1px_rgba(0,0,0,0.5)] dark:shadow-[3px_3px_0px_1px_rgba(255,255,255,0.28)]"
+                  class="project-link"
                 >
                   Devpost
                 </a>
@@ -645,14 +745,14 @@
           </article>
 
           <article class="project-card border border-black/30 dark:border-white/25 p-2">
-            <div class="flex flex-col sm:flex-row gap-3 items-start">
+            <div class="project-row">
               <img
                 src="/assets/projects/fluentform.png"
                 alt="FluentForm project thumbnail"
-                class="w-full sm:w-auto h-24 sm:h-12 object-cover border border-black/30 dark:border-white/25 shrink-0 self-start"
+                class="project-thumb"
                 loading="lazy"
               />
-              <div class="flex flex-col gap-2 min-w-0 justify-start">
+              <div class="project-copy flex flex-col gap-2 min-w-0 justify-start">
                 <div>
                 <p class="font-semibold text-base m-0">FluentForm</p>
                 <p class="text-sm mt-1 m-0">
@@ -660,12 +760,12 @@
                   and generates personalized practice using Azure + OpenAI.
                 </p>
               </div>
-              <div class="flex flex-wrap gap-2">
+              <div class="project-links">
                 <a
                   href="https://github.com/blopezleon/goat-idk"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="inline-flex items-center justify-center rounded-none outline outline-1 outline-black dark:outline-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black px-3 h-8 text-sm font-bold shadow-[3px_3px_0px_1px_rgba(0,0,0,0.5)] dark:shadow-[3px_3px_0px_1px_rgba(255,255,255,0.28)]"
+                  class="project-link"
                 >
                   GitHub
                 </a>
@@ -673,7 +773,7 @@
                   href="https://devpost.com/software/fluentform"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="inline-flex items-center justify-center rounded-none outline outline-1 outline-black dark:outline-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black px-3 h-8 text-sm font-bold shadow-[3px_3px_0px_1px_rgba(0,0,0,0.5)] dark:shadow-[3px_3px_0px_1px_rgba(255,255,255,0.28)]"
+                  class="project-link"
                 >
                   Devpost
                 </a>
@@ -683,14 +783,14 @@
 
           <article class="project-card border border-black/30 dark:border-white/25 p-2">
             <span class="favorite-star" aria-hidden="true"></span>
-            <div class="flex flex-col sm:flex-row gap-3 items-start">
+            <div class="project-row">
               <img
                 src="/assets/projects/mcmc.png"
                 alt="MCMC CUDA Model project thumbnail"
-                class="w-full sm:w-auto h-24 sm:h-12 object-cover border border-black/30 dark:border-white/25 shrink-0 self-start"
+                class="project-thumb"
                 loading="lazy"
               />
-              <div class="flex flex-col gap-2 min-w-0 justify-start">
+              <div class="project-copy flex flex-col gap-2 min-w-0 justify-start">
                 <div>
                 <p class="font-semibold text-base m-0">MCMC CUDA Model</p>
                 <p class="text-sm mt-1 m-0">
@@ -698,12 +798,12 @@
                   backtesting, probabilistic forecasts, and CUDA acceleration.
                 </p>
               </div>
-              <div class="flex flex-wrap gap-2">
+              <div class="project-links">
                 <a
                   href="https://github.com/adv-andrew/mcmc-cuda-model"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="inline-flex items-center justify-center rounded-none outline outline-1 outline-black dark:outline-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black px-3 h-8 text-sm font-bold shadow-[3px_3px_0px_1px_rgba(0,0,0,0.5)] dark:shadow-[3px_3px_0px_1px_rgba(255,255,255,0.28)]"
+                  class="project-link"
                 >
                   GitHub
                 </a>
@@ -712,14 +812,14 @@
           </article>
 
           <article class="project-card border border-black/30 dark:border-white/25 p-2">
-            <div class="flex flex-col sm:flex-row gap-3 items-start">
+            <div class="project-row">
               <img
                 src="/assets/projects/rojo.png"
                 alt="Rojo OSS project thumbnail"
-                class="w-full sm:w-auto h-24 sm:h-12 object-contain bg-white border border-black/30 dark:border-white/25 shrink-0 self-start"
+                class="project-thumb object-contain bg-white"
                 loading="lazy"
               />
-              <div class="flex flex-col gap-2 min-w-0 justify-start">
+              <div class="project-copy flex flex-col gap-2 min-w-0 justify-start">
                 <div>
                 <p class="font-semibold text-base m-0">Rojo OSS</p>
                 <p class="text-sm mt-1 m-0">
@@ -727,12 +827,12 @@
                   around professional-grade engineering workflows.
                 </p>
               </div>
-              <div class="flex flex-wrap gap-2">
+              <div class="project-links">
                 <a
                   href="https://github.com/rojo-rbx"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="inline-flex items-center justify-center rounded-none outline outline-1 outline-black dark:outline-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black px-3 h-8 text-sm font-bold shadow-[3px_3px_0px_1px_rgba(0,0,0,0.5)] dark:shadow-[3px_3px_0px_1px_rgba(255,255,255,0.28)]"
+                  class="project-link"
                 >
                   GitHub
                 </a>
@@ -740,7 +840,7 @@
                   href="https://rojo.space"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="inline-flex items-center justify-center rounded-none outline outline-1 outline-black dark:outline-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black px-3 h-8 text-sm font-bold shadow-[3px_3px_0px_1px_rgba(0,0,0,0.5)] dark:shadow-[3px_3px_0px_1px_rgba(255,255,255,0.28)]"
+                  class="project-link"
                 >
                   Site
                 </a>
@@ -871,15 +971,15 @@
     {% call fieldset("cat ~/friends.md") %}
       <article>
         cool friends
-        <ul>
-          <li><a href="https://matheus.wiki/" target="_blank" rel="noopener noreferrer">Matheus Maldaner</a></li>
-          <li><a href="https://www.awangyisu.com/" target="_blank" rel="noopener noreferrer">Alexander Wang</a></li>
-          <li><a href="https://www.dvidal.dev/" target="_blank" rel="noopener noreferrer">Dylan Vidal</a></li>
-          <li><a href="https://tl-portfolio-ebon.vercel.app/" target="_blank" rel="noopener noreferrer">Thuy Le</a></li>
-          <li><a href="http://hcmack.github.io/" target="_blank" rel="noopener noreferrer">Henry Mack</a></li>
-          <li><a href="https://www.christineyewonkim.com/" target="_blank" rel="noopener noreferrer">Christine Kim</a></li>
-          <li><a href="https://aamogh.vercel.app/" target="_blank" rel="noopener noreferrer">Aamogh Sawant</a></li>
-          <li><a href="https://www.stanleyke.us/" target="_blank" rel="noopener noreferrer">Stanley Ke</a></li>
+        <ul class="friends-list">
+          <li><a class="friend-link" data-note="the research goat" href="https://matheus.wiki/" target="_blank" rel="noopener noreferrer">Matheus Maldaner</a></li>
+          <li><a class="friend-link" data-note="UF SWE, quietly cracked" href="https://www.awangyisu.com/" target="_blank" rel="noopener noreferrer">Alexander Wang</a></li>
+          <li><a class="friend-link" data-note="ex knight hacks president, NVIDIA arc" href="https://www.dvidal.dev/" target="_blank" rel="noopener noreferrer">Dylan Vidal</a></li>
+          <li><a class="friend-link" data-note="portfolio in stealth mode" href="https://tl-portfolio-ebon.vercel.app/" target="_blank" rel="noopener noreferrer">Thuy Le</a></li>
+          <li><a class="friend-link" data-note="VR + robotics tinkerer" href="http://hcmack.github.io/" target="_blank" rel="noopener noreferrer">Henry Mack</a></li>
+          <li><a class="friend-link" data-note="design taste off the charts" href="https://www.christineyewonkim.com/" target="_blank" rel="noopener noreferrer">Christine Kim</a></li>
+          <li><a class="friend-link" data-note="ships before he speaks" href="https://aamogh.vercel.app/" target="_blank" rel="noopener noreferrer">Aamogh Sawant</a></li>
+          <li><a class="friend-link" data-note="portfolio v2, full minimalist" href="https://www.stanleyke.us/" target="_blank" rel="noopener noreferrer">Stanley Ke</a></li>
         </ul>
       </article>
     {% endcall %}
@@ -1043,6 +1143,54 @@
           }
         });
       });
+
+      const friendLinks = document.querySelectorAll(".friend-link[data-note]");
+      const canFriendHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+      if (friendLinks.length && canFriendHover) {
+        const note = document.createElement("div");
+        note.className = "friend-note";
+        note.setAttribute("role", "tooltip");
+        document.body.appendChild(note);
+
+        let active = null;
+
+        function place(x, y) {
+          const offset = 14;
+          const rect = note.getBoundingClientRect();
+          const vw = window.innerWidth;
+          const vh = window.innerHeight;
+          let nx = x + offset;
+          let ny = y + offset;
+          if (nx + rect.width + 8 > vw) {
+            nx = x - rect.width - offset;
+          }
+          if (ny + rect.height + 8 > vh) {
+            ny = y - rect.height - offset;
+          }
+          note.style.left = `${Math.max(8, nx)}px`;
+          note.style.top = `${Math.max(8, ny)}px`;
+        }
+
+        friendLinks.forEach((link) => {
+          link.addEventListener("mouseenter", (event) => {
+            active = link;
+            note.textContent = link.dataset.note || "";
+            note.classList.add("is-visible");
+            place(event.clientX, event.clientY);
+          });
+          link.addEventListener("mousemove", (event) => {
+            if (active === link) {
+              place(event.clientX, event.clientY);
+            }
+          });
+          link.addEventListener("mouseleave", () => {
+            if (active === link) {
+              active = null;
+              note.classList.remove("is-visible");
+            }
+          });
+        });
+      }
     })();
   </script>
 {% endblock %}

@@ -56,7 +56,7 @@ def write_output(content, *path):
         if not os.path.exists(os.path.join(args.output, *path[: i + 1])):
             os.makedirs(os.path.join(args.output, *path[: i + 1]))
 
-    with open(os.path.join(args.output, *path), "w") as f:
+    with open(os.path.join(args.output, *path), "w", encoding="utf-8") as f:
         f.write(content)
 
 
