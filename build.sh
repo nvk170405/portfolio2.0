@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Install uv if not available
+if ! command -v uv &> /dev/null; then
+    echo "Installing uv..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
+fi
+
 set -m
 
 fail() {
