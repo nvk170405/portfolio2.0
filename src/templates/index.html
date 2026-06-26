@@ -364,7 +364,6 @@
     <p class="m-0">things i've built</p>
     <div class="flex flex-col gap-4 mt-4">
       <article class="project-card border border-black/30 dark:border-white/25 p-3">
-        <span class="favorite-star" aria-hidden="true"></span>
         <div class="project-copy flex flex-col gap-2 min-w-0 justify-start">
           <div>
             <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
@@ -395,24 +394,21 @@
         <div class="project-copy flex flex-col gap-2 min-w-0 justify-start">
           <div>
             <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
-              <p class="font-semibold text-base m-0">FinoraX</p>
-              <p class="text-sm m-0" style="color: var(--site-muted);">Aug 2025</p>
+              <p class="font-semibold text-base m-0">Contract Analysis AI</p>
+              <p class="text-sm m-0" style="color: var(--site-muted);">2026</p>
             </div>
             <div class="flex flex-wrap gap-1 mt-1">
-              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">React</span>
-              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">Vite</span>
-              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">TypeScript</span>
-              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">PostgreSQL</span>
-              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">Tailwind CSS</span>
-              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">Supabase</span>
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">LLaMA-7B</span>
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">LoRA</span>
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">FastAPI</span>
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">Apache Kafka</span>
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">Python</span>
             </div>
             <ul class="text-sm mt-2 mb-0 pl-4 flex flex-col gap-1">
-              <li>Cloud-native finance platform on Supabase supporting 10,000+ concurrent users with 40% faster data
-                retrieval</li>
-              <li>ML-based financial forecasting pipeline processing 50,000+ monthly transactions with automated anomaly
-                detection</li>
-              <li>High-concurrency REST API with sub-200ms response times, containerized with Docker for cloud
-                deployment</li>
+              <li>Reduced contract review time by 40% over manual analysis by fine-tuning LLaMA-7B on 5,000+ legal documents using LoRA (r=64)</li>
+              <li>Built a FastAPI inference endpoint returning structured JSON summaries of obligations, deadlines, and risk clauses in under 2 seconds per document</li>
+              <li>Cut GPU memory consumption by ~60% vs full fine-tuning by applying LoRA rank-64 adapters across attention layers, enabling training on a single A100</li>
+              <li>Architected a distributed pipeline with Apache Kafka brokering across worker nodes for concurrent ingestion and analysis of hundreds of contracts at scale</li>
             </ul>
           </div>
         </div>
