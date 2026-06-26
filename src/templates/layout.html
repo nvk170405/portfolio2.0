@@ -15,7 +15,7 @@
   <script>
     (() => {
       const storedTheme = localStorage.getItem("theme");
-      if (storedTheme === "dark") {
+      if (storedTheme !== "light") {
         document.documentElement.classList.add("dark");
       }
     })();
