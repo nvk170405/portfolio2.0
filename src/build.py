@@ -8,13 +8,13 @@ import frontmatter
 from bs4 import BeautifulSoup, element
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-first_name = "Andrew"
-last_name = "Vu"
-nickname = "Andy"
-name = f"{first_name} ({nickname}) {last_name}"
-title_name = f"{nickname} {last_name}"
-domain = "andrewvu.me"
-generic_username = "adv-andrew"
+first_name = "Navketan"
+last_name = "Singh"
+nickname = "Navketan"
+name = f"{first_name} {last_name}"
+title_name = f"{first_name} {last_name}"
+domain = "navketansingh.dev"
+generic_username = "nvk170405"
 twitter_username = f"@{generic_username}"
 url = f"https://{domain}"  # for opengraph
 
@@ -224,92 +224,7 @@ for item in seotags:
 
 write_output(index_soup.encode_contents().decode("utf-8"), "index.html")
 
-custom_pages = [
-    {
-        "template": "random/travel.html",
-        "output": ("random", "travel.html"),
-        "title": f"{title_name} | Travel",
-        "seo": {
-            **seo_common,
-            "url": urljoin(url, "/random/travel"),
-            "title": f"{title_name} | Travel",
-            "description": f"{title_name}'s travel map and bucket list",
-            "image": urljoin(url, "/assets/me.jpg"),
-        },
-    },
-    {
-        "template": "random/music.html",
-        "output": ("random", "music.html"),
-        "title": f"{title_name} | Music",
-        "seo": {
-            **seo_common,
-            "url": urljoin(url, "/random/music"),
-            "title": f"{title_name} | Music",
-            "description": f"{title_name}'s bouncing album cover wall",
-            "image": urljoin(url, "/assets/me.jpg"),
-        },
-    },
-    {
-        "template": "random/wins.html",
-        "output": ("random", "wins.html"),
-        "title": f"{title_name} | Wins",
-        "seo": {
-            **seo_common,
-            "url": urljoin(url, "/random/wins"),
-            "title": f"{title_name} | Wins",
-            "description": f"{title_name}'s trophy case of wins and milestones",
-            "image": urljoin(url, "/assets/me.jpg"),
-        },
-    },
-    {
-        "template": "random/lore.html",
-        "output": ("random", "lore.html"),
-        "title": f"{title_name} | Lore",
-        "seo": {
-            **seo_common,
-            "url": urljoin(url, "/random/lore"),
-            "title": f"{title_name} | Lore",
-            "description": f"{title_name}'s story notes, side quests, and builder lore",
-            "image": urljoin(url, "/assets/me.jpg"),
-        },
-    },
-    {
-        "template": "random/toolbox.html",
-        "output": ("random", "toolbox.html"),
-        "title": f"{title_name} | Toolbox",
-        "seo": {
-            **seo_common,
-            "url": urljoin(url, "/random/toolbox"),
-            "title": f"{title_name} | Toolbox",
-            "description": f"{title_name}'s stack turned into a tiny tetris-style toolbox game",
-            "image": urljoin(url, "/assets/me.jpg"),
-        },
-    },
-    {
-        "template": "resources.html",
-        "output": ("resources.html",),
-        "title": f"{title_name} | Resources",
-        "seo": {
-            **seo_common,
-            "url": urljoin(url, "/resources"),
-            "title": f"{title_name} | Resources",
-            "description": f"{title_name}'s shelf of resources for visitors from videos and posts",
-            "image": urljoin(url, "/assets/me.jpg"),
-        },
-    },
-    {
-        "template": "tt.html",
-        "output": ("tt.html",),
-        "title": f"{title_name} | TikTok",
-        "seo": {
-            **seo_common,
-            "url": urljoin(url, "/tt"),
-            "title": f"{title_name} | TikTok",
-            "description": f"landing page for visitors coming from tiktok",
-            "image": urljoin(url, "/assets/me.jpg"),
-        },
-    }
-]
+custom_pages = []
 
 for page in custom_pages:
     soup = render_template(page["template"], name=name, title=page["title"])

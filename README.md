@@ -1,6 +1,6 @@
-# andrewvu.me
+# navketansingh.dev
 
-My portfolio website, built with a custom static site generator. Template from [sagarreddypatil/portfolio-website](https://github.com/sagarreddypatil/portfolio-website).
+Personal portfolio website, built with a custom static site generator. Template from [sagarreddypatil/portfolio-website](https://github.com/sagarreddypatil/portfolio-website).
 
 ## Dependencies
 
@@ -25,7 +25,7 @@ pnpm build
 ## Map
 
 ```
-andrewvu.me
+portfolio
 ├── README.md                     # this file
 ├── dist                          # output directory
 ├── LICENSE                       # MIT License
@@ -40,7 +40,7 @@ andrewvu.me
 │       └── *.md                  # project posts
 ├── public
 │   ├── assets/                   # static assets, images
-│   └── photography/              # photos (optional)
+│   └── favicon.svg
 ├── src
 │   ├── build.py                  # main entrypoint
 │   ├── dev-server.py             # live reload server

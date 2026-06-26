@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://andrewvu.me/sitemap.xml
+Sitemap: https://navketansingh.dev/sitemap.xml

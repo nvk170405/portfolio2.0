@@ -3,1197 +3,494 @@
 {% from "components/button.html" import button %}
 
 {% block head_extra %}
-  <style>
-    .experience-card {
-      position: relative;
-      background: var(--site-panel);
-    }
+<style>
+  .experience-card {
+    position: relative;
+    background: var(--site-panel);
+  }
 
-    .favorite-star {
-      position: absolute;
-      right: 0.6rem;
-      bottom: 0.55rem;
-      width: 1.35rem;
-      height: 1.35rem;
-      display: grid;
-      place-items: center;
-      background: color-mix(in srgb, var(--site-panel) 92%, transparent);
-      border: 1px solid var(--site-border);
-      border-radius: 999px;
-      box-shadow: 2px 2px 0 var(--site-shadow);
-      pointer-events: none;
-    }
+  .favorite-star {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.55rem;
+    width: 1.35rem;
+    height: 1.35rem;
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, var(--site-panel) 92%, transparent);
+    border: 1px solid var(--site-border);
+    border-radius: 999px;
+    box-shadow: 2px 2px 0 var(--site-shadow);
+    pointer-events: none;
+  }
 
-    .favorite-star::before {
-      content: "";
-      width: 0.9rem;
-      height: 0.9rem;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23f2c94c' stroke='%23b58900' stroke-width='1.4' d='M12 2.2l2.8 5.68 6.27.91-4.54 4.43 1.07 6.25L12 16.5l-5.6 2.97 1.07-6.25L2.93 8.79l6.27-.91z'/%3E%3C/svg%3E");
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-    }
+  .favorite-star::before {
+    content: "";
+    width: 0.9rem;
+    height: 0.9rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23f2c94c' stroke='%23b58900' stroke-width='1.4' d='M12 2.2l2.8 5.68 6.27.91-4.54 4.43 1.07 6.25L12 16.5l-5.6 2.97 1.07-6.25L2.93 8.79l6.27-.91z'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 
-    .profile-photo-wrap {
-      position: relative;
-      cursor: pointer;
-    }
+  .home-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
 
-    .profile-photo-wrap img {
-      transition: opacity 0.2s ease;
-    }
+  .home-mini-card {
+    border: 1px solid var(--site-border);
+    background: var(--site-panel);
+    padding: 0.8rem;
+    box-shadow: 4px 4px 0 var(--site-shadow);
+  }
 
-    .profile-photo-wrap .photo-alt {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-    }
+  .home-mini-card p {
+    margin: 0;
+  }
 
-    .profile-photo-wrap:hover .photo-main {
-      opacity: 0;
-    }
+  .home-mini-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.74rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--site-muted);
+  }
 
-    .profile-photo-wrap:hover .photo-alt {
-      opacity: 1;
-    }
+  .home-mini-value {
+    margin-top: 0.35rem;
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
 
-    .easter-egg-note {
-      position: absolute;
-      bottom: -2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.7rem;
-      white-space: nowrap;
-      opacity: 0;
-      transition: opacity 0.2s ease;
-      pointer-events: none;
-    }
+  .project-card {
+    position: relative;
+    background: var(--site-panel);
+  }
 
-    .profile-photo-wrap:hover .easter-egg-note {
-      opacity: 0.7;
-    }
+  .project-card .favorite-star {
+    top: 0.55rem;
+    bottom: auto;
+  }
 
-    .experience-inline-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      height: 1.35rem;
-      padding: 0 0.45rem;
-      border: 1px solid var(--site-border-strong);
-      background: var(--site-panel);
-      font-size: 0.68rem;
-      font-weight: 700;
-      line-height: 1;
-      box-shadow: 2px 2px 0 var(--site-shadow);
-    }
+  .project-row {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+  }
 
-    .experience-inline-button:hover {
-      background: var(--site-text);
-      color: var(--site-panel);
-    }
+  .project-copy {
+    min-width: 0;
+  }
 
-    .proof-chip {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      height: 1.5rem;
-      padding: 0 0.5rem;
-      border: 1px solid var(--site-border-strong);
-      background: var(--site-panel-soft);
-      color: inherit;
-      text-decoration: none;
-      font-size: 0.72rem;
-      font-weight: 700;
-      line-height: 1;
-      box-shadow: 2px 2px 0 var(--site-shadow);
-    }
+  .project-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
 
-    .proof-chip:hover {
-      background: var(--site-text);
-      color: var(--site-panel);
-    }
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.75rem;
+    padding: 0 0.65rem;
+    border: 1px solid var(--site-border-strong);
+    background: var(--site-panel);
+    color: inherit;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+    box-shadow: 3px 3px 0 var(--site-shadow-strong);
+  }
 
-    .experience-gallery {
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      background: rgba(0, 0, 0, 0.58);
-    }
+  .project-link:hover {
+    background: var(--site-text);
+    color: var(--site-panel);
+  }
 
-    .experience-gallery.is-open {
-      display: flex;
-    }
+  .skill-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.6rem;
+    padding: 0 0.55rem;
+    border: 1px solid var(--site-border);
+    background: var(--site-panel-soft);
+    font-size: 0.76rem;
+    font-weight: 600;
+    line-height: 1;
+    box-shadow: 2px 2px 0 var(--site-shadow);
+  }
 
-    .experience-gallery-panel {
-      width: min(920px, 100%);
-      max-height: min(80vh, 760px);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      border: 1px solid var(--site-border);
-      background: var(--site-panel);
-      box-shadow: 6px 6px 0 var(--site-shadow);
-    }
+  .pub-card {
+    background: var(--site-panel);
+    border: 1px solid var(--site-border);
+    padding: 1rem;
+    box-shadow: 4px 4px 0 var(--site-shadow);
+  }
 
-    .experience-gallery-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid var(--site-border);
-      background: var(--site-panel-soft);
-    }
+  .pub-card p {
+    margin: 0;
+  }
 
-    .experience-gallery-head h3,
-    .experience-gallery-head p {
-      margin: 0;
-    }
+  .pub-badge {
+    display: inline-flex;
+    align-items: center;
+    height: 1.35rem;
+    padding: 0 0.5rem;
+    border: 1px solid var(--site-border-strong);
+    background: var(--site-panel);
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1;
+    box-shadow: 2px 2px 0 var(--site-shadow);
+  }
 
-    .experience-gallery-head h3 {
-      font-size: 1rem;
-    }
+  .edu-card {
+    background: var(--site-panel);
+    border: 1px solid var(--site-border);
+    padding: 1rem;
+    box-shadow: 4px 4px 0 var(--site-shadow);
+  }
 
-    .experience-gallery-head p {
-      margin-top: 0.15rem;
-      font-size: 0.84rem;
-      opacity: 0.68;
-    }
+  .edu-card p {
+    margin: 0;
+  }
 
-    .experience-gallery-close {
-      width: 2rem;
-      height: 2rem;
-      border: 1px solid var(--site-border-strong);
-      background: var(--site-panel);
-      font-size: 1rem;
-      line-height: 1;
-      box-shadow: 2px 2px 0 var(--site-shadow);
-    }
+  .cert-chip {
+    display: inline-flex;
+    align-items: center;
+    height: 1.35rem;
+    padding: 0 0.45rem;
+    border: 1px solid var(--site-border);
+    background: var(--site-panel-soft);
+    font-size: 0.68rem;
+    font-weight: 600;
+    line-height: 1;
+    box-shadow: 2px 2px 0 var(--site-shadow);
+  }
 
-    .experience-gallery-close:hover {
-      background: var(--site-text);
-      color: var(--site-panel);
-    }
-
-    .experience-gallery-grid {
-      overflow-y: auto;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.85rem;
-      padding: 1rem;
-      background: var(--site-panel);
-    }
-
-    .experience-gallery-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      border: 1px solid var(--site-border);
-      background: var(--site-panel-soft);
-      padding: 0.6rem;
-    }
-
-    .experience-gallery-item img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      border: 1px solid var(--site-border);
-      margin: 0;
-    }
-
-    .experience-gallery-item p {
-      margin: 0;
-      font-size: 0.84rem;
-      line-height: 1.35;
-    }
-
-    @media (max-width: 700px) {
-      .experience-gallery-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
+  @media (max-width: 900px) {
     .home-grid-4 {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 0.75rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+  }
 
-    .home-mini-card {
-      border: 1px solid var(--site-border);
-      background: var(--site-panel);
-      padding: 0.8rem;
-      box-shadow: 4px 4px 0 var(--site-shadow);
-    }
-
-    .home-mini-card p {
-      margin: 0;
-    }
-
-    .home-mini-label {
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.74rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--site-muted);
-    }
-
-    .home-mini-value {
-      margin-top: 0.35rem;
-      font-size: 0.95rem;
-      line-height: 1.45;
-    }
-
-    .project-card {
-      position: relative;
-      background: var(--site-panel);
-    }
-
-    .project-card .favorite-star {
-      top: 0.55rem;
-      bottom: auto;
+  @media (max-width: 640px) {
+    .home-grid-4 {
+      grid-template-columns: 1fr;
     }
 
     .project-row {
-      display: flex;
-      gap: 0.65rem;
-      align-items: flex-start;
-    }
-
-    .project-thumb {
-      width: 96px;
-      height: 56px;
-      flex: 0 0 96px;
-      border: 1px solid rgba(0, 0, 0, 0.3);
-      object-fit: cover;
-      align-self: flex-start;
-    }
-
-    .project-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
+      gap: 0.55rem;
     }
 
     .project-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      height: 1.75rem;
-      padding: 0 0.65rem;
-      border: 1px solid var(--site-border-strong);
-      background: var(--site-panel);
-      color: inherit;
-      text-decoration: none;
-      font-size: 0.75rem;
-      font-weight: 700;
-      line-height: 1;
-      box-shadow: 3px 3px 0 var(--site-shadow-strong);
+      height: 1.6rem;
+      padding: 0 0.55rem;
+      font-size: 0.68rem;
+      box-shadow: 2px 2px 0 var(--site-shadow);
     }
-
-    .project-link:hover {
-      background: var(--site-text);
-      color: var(--site-panel);
-    }
-
-    @media (max-width: 900px) {
-      .home-grid-4 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 640px) {
-      .home-grid-4 {
-        grid-template-columns: 1fr;
-      }
-
-      .project-row {
-        gap: 0.55rem;
-      }
-
-      .project-thumb {
-        width: 88px;
-        height: 52px;
-        flex-basis: 88px;
-      }
-
-      .project-copy {
-        min-width: 0;
-      }
-
-      .project-copy p {
-        word-break: break-word;
-      }
-
-      .project-link {
-        height: 1.6rem;
-        padding: 0 0.55rem;
-        font-size: 0.68rem;
-        box-shadow: 2px 2px 0 var(--site-shadow);
-      }
-    }
-
-    .friends-list .friend-link {
-      position: relative;
-    }
-
-    .friend-note {
-      position: fixed;
-      z-index: 60;
-      max-width: 240px;
-      padding: 0.4rem 0.55rem;
-      background: var(--site-panel);
-      border: 1px solid var(--site-border-strong);
-      box-shadow: 3px 3px 0 var(--site-shadow);
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.78rem;
-      line-height: 1.35;
-      color: var(--site-text);
-      pointer-events: none;
-      opacity: 0;
-      transform: translateY(4px);
-      transition: opacity 100ms ease, transform 100ms ease;
-    }
-
-    .friend-note.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (hover: none), (pointer: coarse) {
-      .friend-note {
-        display: none;
-      }
-    }
-  </style>
+  }
+</style>
 {% endblock %}
 
 {% block content %}
-  <div class="flex flex-col gap-4">
-    {% call fieldset("cat ~/for-visitors.md") %}
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div class="flex items-center gap-3">
-          <div class="flex items-center gap-2 shrink-0" aria-label="TikTok and Instagram">
-            <span
-              class="icon"
-              style="mask-image: url('/assets/tiktok.svg'); -webkit-mask-image: url('/assets/tiktok.svg'); width: 20px; height: 20px;"
-              aria-label="TikTok"
-              title="TikTok"
-            ></span>
-            <span
-              class="icon"
-              style="mask-image: url('/assets/instagram.svg'); -webkit-mask-image: url('/assets/instagram.svg'); width: 20px; height: 20px;"
-              aria-label="Instagram"
-              title="Instagram"
-            ></span>
-          </div>
-          <p class="text-base m-0">
-            visiting from one of my videos or posts? i put a little collection of
-            things together for you.
-          </p>
-        </div>
-        {% call button("/resources", "w-full sm:w-auto h-9 text-base font-bold me-0 sm:px-5") %}
-          <span>resources</span>
-        {% endcall %}
+<div class="flex flex-col gap-4">
+  <!-- whoami -->
+  {% call fieldset("whoami") %}
+  <article class="text-lg prose-p:m-0">
+    <div class="flex flex-col gap-4">
+      <p>
+        Hey! I'm Navketan — a Computer Science undergrad at Chandigarh University
+        with a focus on AI/ML, NLP, and systems engineering.
+      </p>
+      <p>
+        I build things at the intersection of machine learning and real-world
+        applications — from clinical document intelligence platforms to
+        cloud-native finance tools. When I'm not shipping code, I'm usually
+        contributing to open source or working on research papers.
+      </p>
+      <p>
+        Currently researching post-quantum cryptographic architectures for
+        NLP systems, with a paper under review at IEEE.
+      </p>
+      <p>
+        Feel free to reach out — always happy to connect.
+      </p>
+    </div>
+  </article>
+  {% endcall %}
+  <!-- random -->
+  {% call fieldset("cat ~/random.md") %}
+  <div class="flex flex-col gap-3">
+    <p class="text-base m-0">things I enjoy outside of code</p>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 pt-1">
+      <div class="home-mini-card flex items-center gap-2">
+        <span class="text-xl"></span>
+        <p class="home-mini-value text-sm">Gaming</p>
       </div>
-    {% endcall %}
-    <!-- <WhoAmI /> -->
-    {% call fieldset("whoami") %}
-      <article class="text-lg prose-p:m-0 flex flex-col-reverse sm:block">
-        <div class="profile-photo-wrap mt-4 mx-auto w-56 max-w-full sm:float-right sm:mt-0 sm:ml-4 sm:mb-4 sm:mx-0 sm:w-52 md:w-60 lg:w-64">
-          <img
-            src="/assets/me.jpg"
-            alt="Portrait of Andrew Vu"
-            class="photo-main w-full object-cover"
-            loading="eager"
-          />
-          <img
-            src="/assets/me_alt.jpg"
-            alt="Goofy portrait of Andrew Vu"
-            class="photo-alt w-full object-cover"
-            loading="eager"
-          />
-          <span class="easter-egg-note">you found my easter egg!</span>
-        </div>
-        <div class="flex flex-col gap-4">
-          <p>
-            Hii!! I'm Andy, a CS student at UF and Roblox game developer
-            (you've probably played one of my games before)
-          </p>
-          <p>
-            Most of my time goes into software, game development, trying out
-            the trendiest ai tools (cough...openclaw...), and building whatever
-            idea I've convinced myself "will only take a weekend"
-          </p>
-          <p>
-            When I'm not working on something, I'm probably rock climbing,
-            hiking, playing video games, or a late night walk (and snack)
-          </p>
-          <p>
-            Feel free to reach out to me on LinkedIn!
-          </p>
-        </div>
-        <div class="clear-right"></div>
-      </article>
-    {% endcall %}
-    {% call fieldset("cat ~/random.md") %}
-      <div class="flex flex-col gap-3">
-        <div class="flex flex-col gap-1">
-          <p class="text-base m-0">My life motto</p>
-          <p class="text-lg italic m-0">
-            "Let the weather be the weather" - redditor in r/stoicism
-          </p>
-        </div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 pt-1">
-          {% call button("/random/travel", "w-full h-9 text-base font-bold me-0 !justify-start") %}
-            <span>Travel</span>
-          {% endcall %}
-          {% call button("/random/music", "w-full h-9 text-base font-bold me-0 !justify-start") %}
-            <span>Music</span>
-          {% endcall %}
-          {% call button("/random/wins", "w-full h-9 text-base font-bold me-0 !justify-start") %}
-            <span>Wins</span>
-          {% endcall %}
-          {% call button("/random/lore", "w-full h-9 text-base font-bold me-0 !justify-start") %}
-            <span>Lore</span>
-          {% endcall %}
-          {% call button("/random/toolbox", "w-full h-9 text-base font-bold me-0 !justify-start") %}
-            <span>Toolbox</span>
-          {% endcall %}
-        </div>
+      <div class="home-mini-card flex items-center gap-2">
+        <span class="text-xl"></span>
+        <p class="home-mini-value text-sm">Music</p>
       </div>
-    {% endcall %}
-    {% call fieldset("cat ~/experience.md") %}
-      <div id="experience-section" class="text-lg">
-        <p class="m-0">the more professional-looking part of this</p>
-        <div class="flex flex-col gap-4 mt-4">
-          <div class="experience-card border border-black/30 dark:border-white/25 p-3">
-            <span class="favorite-star" aria-hidden="true"></span>
-            <div class="flex items-start gap-3">
-              <img
-                src="/assets/experience/nvidia.png"
-                alt="NVIDIA logo"
-                class="w-12 h-12 shrink-0 object-contain border border-black/30 dark:border-white/25 p-1 bg-white"
-                loading="lazy"
-              />
-              <div class="min-w-0 flex-1">
-                <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
-                  <div>
-                    <p class="font-semibold text-base m-0">NVIDIA</p>
-                    <p class="text-sm m-0">Solutions Architect Intern</p>
-                  </div>
-                  <p class="text-sm m-0">05/2026 - ???</p>
-                </div>
-                <p class="text-xs opacity-60 mt-1 m-0">Santa Clara, California</p>
-              </div>
-            </div>
-          </div>
-          <div class="experience-card border border-black/30 dark:border-white/25 p-3">
-            <span class="favorite-star" aria-hidden="true"></span>
-            <div class="flex items-start gap-3">
-              <img
-                src="/assets/experience/adtran.png"
-                alt="Adtran logo"
-                class="w-12 h-12 shrink-0 object-contain border border-black/30 dark:border-white/25 p-1 bg-white"
-                loading="lazy"
-              />
-              <div class="min-w-0 flex-1">
-                <p class="font-semibold text-base m-0">Adtran</p>
-                <div class="mt-3 pt-3 border-t border-black/30 dark:border-white/25">
-                  <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
-                    <div>
-                      <p class="text-sm font-semibold m-0">
-                        Software Engineer Intern, Part-time
-                      </p>
-                      <p class="text-sm mt-1 m-0">Technical Documentation Team</p>
-                    </div>
-                    <p class="text-sm m-0">08/2025 - 04/2026</p>
-                  </div>
-                  <p class="text-xs opacity-60 mt-1 m-0">Remote</p>
-                </div>
-                <div class="mt-3 pt-3 border-t border-black/30 dark:border-white/25">
-                  <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
-                    <div>
-                      <p class="text-sm font-semibold m-0">
-                        Software Engineer Intern
-                      </p>
-                      <p class="text-sm mt-1 m-0">Technical Documentation Team</p>
-                    </div>
-                    <p class="text-sm m-0">05/2025 - 08/2025</p>
-                  </div>
-                  <p class="text-xs opacity-60 mt-1 m-0">Atlanta, Georgia, On-site</p>
-                </div>
-                <div class="flex flex-wrap gap-2 mt-3">
-                  <button
-                    type="button"
-                    class="proof-chip"
-                    data-open-gallery="adtran"
-                  >
-                    pictures!
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="experience-card border border-black/30 dark:border-white/25 p-3">
-            <div class="flex items-start gap-3">
-              <img
-                src="/assets/experience/gatorai.png"
-                alt="GatorAI logo"
-                class="w-12 h-12 shrink-0 object-contain border border-black/30 dark:border-white/25 p-1 bg-white"
-                loading="lazy"
-              />
-              <div class="min-w-0 flex-1">
-                <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
-                  <div>
-                    <p class="font-semibold text-base m-0">GatorAI</p>
-                    <p class="text-sm m-0">Applied Tech Lead</p>
-                  </div>
-                  <p class="text-sm m-0">04/2025 - present</p>
-                </div>
-                <p class="text-xs opacity-60 mt-1 m-0">Gainesville, Florida</p>
-                <p class="text-sm mt-1 m-0">
-                  Managing 13 AI/ML projects end-to-end
-                </p>
-                <div class="flex flex-wrap gap-2 mt-3">
-                  <button
-                    type="button"
-                    class="proof-chip"
-                    data-open-gallery="gatorai"
-                  >
-                    pictures!
-                  </button>
-                  <a
-                    href="https://www.instagram.com/uf_gatorai/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="proof-chip"
-                  >
-                    club
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="experience-card border border-black/30 dark:border-white/25 p-3">
-            <span class="favorite-star" aria-hidden="true"></span>
-            <div class="flex items-start gap-3">
-              <img
-                src="/assets/experience/vuplay.png"
-                alt="VuPlay logo"
-                class="w-12 h-12 shrink-0 object-contain border border-black/30 dark:border-white/25 p-1 bg-white"
-                loading="lazy"
-              />
-              <div class="min-w-0 flex-1">
-                <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
-                  <div>
-                    <p class="font-semibold text-base m-0">VuPlay Creative LLC</p>
-                    <p class="text-sm m-0">Founder</p>
-                  </div>
-                  <p class="text-sm m-0">12/2021 - present</p>
-                </div>
-                <p class="text-xs opacity-60 mt-1 m-0">Orlando, Florida, Hybrid</p>
-                <p class="text-sm mt-1 m-0">
-                  Launched 5 Roblox games, 145+ million plays
-                </p>
-                <div class="flex flex-wrap gap-2 mt-3">
-                  <a
-                    href="#games-section"
-                    class="proof-chip"
-                  >
-                    games
-                  </a>
-                  <a
-                    href="https://www.roblox.com/users/96753261/profile"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="proof-chip"
-                  >
-                    roblox profile
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="experience-card border border-black/30 dark:border-white/25 p-3">
-            <div class="flex items-start gap-3">
-              <img
-                src="/assets/experience/ucf.png"
-                alt="UCF logo"
-                class="w-12 h-12 shrink-0 object-contain border border-black/30 dark:border-white/25 p-1 bg-white"
-                loading="lazy"
-              />
-              <div class="min-w-0 flex-1">
-                <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
-                  <div>
-                    <p class="font-semibold text-base m-0">
-                      University of Central Florida
-                    </p>
-                    <p class="text-sm m-0">Machine Learning Research Assistant</p>
-                  </div>
-                  <p class="text-sm m-0">09/2023 - 05/2024</p>
-                </div>
-                <p class="text-xs opacity-60 mt-1 m-0">Orlando, Florida, Hybrid</p>
-                <p class="text-sm mt-1 m-0">Photovoltaic anomaly detection</p>
-              </div>
-            </div>
-          </div>
-          <div class="experience-card border border-black/30 dark:border-white/25 p-3">
-            <div class="flex items-start gap-3">
-              <img
-                src="/assets/experience/roblox.svg"
-                alt="Roblox logo"
-                class="w-12 h-12 shrink-0 object-contain border border-black/30 dark:border-white/25 p-2 bg-white"
-                loading="lazy"
-              />
-              <div class="min-w-0 flex-1">
-                <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
-                  <div>
-                    <p class="font-semibold text-base m-0">Roblox</p>
-                    <p class="text-sm m-0">
-                      Game Developer, Roblox Developer Conference 2022
-                    </p>
-                  </div>
-                  <p class="text-sm m-0">09/2022</p>
-                </div>
-                <p class="text-xs opacity-60 mt-1 m-0">San Francisco, California, On-site</p>
-                <p class="text-sm mt-1 m-0">
-                  Invite-only conference for top Roblox developers and creators.
-                  82 million plays at the time
-                </p>
-                <div class="flex flex-wrap gap-2 mt-3">
-                  <a
-                    href="https://www.roblox.com/games/10767940743"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="proof-chip"
-                  >
-                    event hub
-                  </a>
-                  <a
-                    href="https://corp.roblox.com/newsroom/2022/09/roblox-innovation-awards-2022-complete-winners-list"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="proof-chip"
-                  >
-                    article
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="experience-card border border-black/30 dark:border-white/25 p-3">
-            <div class="flex items-start gap-3">
-              <img
-                src="/assets/experience/gamefam.png"
-                alt="Gamefam logo"
-                class="w-12 h-12 shrink-0 object-contain border border-black/30 dark:border-white/25 p-1 bg-white"
-                loading="lazy"
-              />
-              <div class="min-w-0 flex-1">
-                <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
-                  <div>
-                    <p class="font-semibold text-base m-0">Gamefam</p>
-                    <p class="text-sm m-0">Project Manager and Developer</p>
-                  </div>
-                  <p class="text-sm m-0">02/2021 - 05/2021</p>
-                </div>
-                <p class="text-xs opacity-60 mt-1 m-0">Los Angeles, California, Remote</p>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="home-mini-card flex items-center gap-2">
+        <span class="text-xl"></span>
+        <p class="home-mini-value text-sm">Painting</p>
       </div>
-    {% endcall %}
-    {% call fieldset("ls ~/projects.md") %}
-      <div id="projects-section" class="text-lg">
-        <p class="m-0">a few things i want people to actually click on</p>
-        <div class="flex flex-col gap-4 mt-4">
-          <article class="project-card border border-black/30 dark:border-white/25 p-2">
-            <span class="favorite-star" aria-hidden="true"></span>
-            <div class="project-row">
-              <img
-                src="/assets/projects/datamsith.png"
-                alt="DataSmith project thumbnail"
-                class="project-thumb"
-                loading="lazy"
-              />
-              <div class="project-copy flex flex-col gap-2 min-w-0 justify-start">
-                <div>
-                <p class="font-semibold text-base m-0">DataSmith</p>
-                <p class="text-sm mt-1 m-0">
-                  Agent-powered data cleaning pipeline for turning raw datasets
-                  into ML-ready data with quality scoring and dashboards.
-                </p>
-              </div>
-              <div class="project-links">
-                <a
-                  href="https://devpost.com/software/67-industries"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="project-link"
-                >
-                  Devpost
-                </a>
-              </div>
-            </div>
-          </article>
-
-          <article class="project-card border border-black/30 dark:border-white/25 p-2">
-            <div class="project-row">
-              <img
-                src="/assets/projects/fluentform.png"
-                alt="FluentForm project thumbnail"
-                class="project-thumb"
-                loading="lazy"
-              />
-              <div class="project-copy flex flex-col gap-2 min-w-0 justify-start">
-                <div>
-                <p class="font-semibold text-base m-0">FluentForm</p>
-                <p class="text-sm mt-1 m-0">
-                  AI pronunciation coach that analyzes phonemes, scores speech,
-                  and generates personalized practice using Azure + OpenAI.
-                </p>
-              </div>
-              <div class="project-links">
-                <a
-                  href="https://github.com/blopezleon/goat-idk"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="project-link"
-                >
-                  GitHub
-                </a>
-                <a
-                  href="https://devpost.com/software/fluentform"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="project-link"
-                >
-                  Devpost
-                </a>
-              </div>
-            </div>
-          </article>
-
-          <article class="project-card border border-black/30 dark:border-white/25 p-2">
-            <span class="favorite-star" aria-hidden="true"></span>
-            <div class="project-row">
-              <img
-                src="/assets/projects/mcmc.png"
-                alt="MCMC CUDA Model project thumbnail"
-                class="project-thumb"
-                loading="lazy"
-              />
-              <div class="project-copy flex flex-col gap-2 min-w-0 justify-start">
-                <div>
-                <p class="font-semibold text-base m-0">MCMC CUDA Model</p>
-                <p class="text-sm mt-1 m-0">
-                  Monte Carlo + Markov-chain options trading system with
-                  backtesting, probabilistic forecasts, and CUDA acceleration.
-                </p>
-              </div>
-              <div class="project-links">
-                <a
-                  href="https://github.com/adv-andrew/mcmc-cuda-model"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="project-link"
-                >
-                  GitHub
-                </a>
-              </div>
-            </div>
-          </article>
-
-          <article class="project-card border border-black/30 dark:border-white/25 p-2">
-            <div class="project-row">
-              <img
-                src="/assets/projects/rojo.png"
-                alt="Rojo OSS project thumbnail"
-                class="project-thumb object-contain bg-white"
-                loading="lazy"
-              />
-              <div class="project-copy flex flex-col gap-2 min-w-0 justify-start">
-                <div>
-                <p class="font-semibold text-base m-0">Rojo OSS</p>
-                <p class="text-sm mt-1 m-0">
-                  Open-source contributions to Roblox developer tooling built
-                  around professional-grade engineering workflows.
-                </p>
-              </div>
-              <div class="project-links">
-                <a
-                  href="https://github.com/rojo-rbx"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="project-link"
-                >
-                  GitHub
-                </a>
-                <a
-                  href="https://rojo.space"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="project-link"
-                >
-                  Site
-                </a>
-              </div>
-            </div>
-          </article>
-        </div>
+      <div class="home-mini-card flex items-center gap-2">
+        <span class="text-xl"></span>
+        <p class="home-mini-value text-sm">Traveling</p>
       </div>
-    {% endcall %}
-    {% call fieldset("cat ~/roblox-games.md") %}
-      <div id="games-section" class="text-lg">
-        <p>my games :D</p>
-        <p class="text-sm mt-1">Current visits as of 03/29/2026.</p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-          <a
-            href="https://www.roblox.com/games/8549047195/Anime-Warriors-Simulator"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="block no-underline border border-black/30 dark:border-white/25 hover:bg-black hover:text-white hover:opacity-90 transition-opacity duration-150"
-          >
-            <div class="w-full aspect-[500/280] overflow-hidden border-b border-black/30 dark:border-white/25">
-              <img
-                src="/assets/games/anime-warriors-simulator.jpg"
-                alt="Anime Warriors Simulator thumbnail"
-                class="!w-full !h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div class="p-3">
-              <p class="font-semibold leading-tight text-base m-0">
-                Anime Warriors Simulator
-              </p>
-              <p class="text-sm mt-1 m-0">Created 01/15/2022</p>
-              <p class="text-sm mt-1 m-0">Visits 57,170,413</p>
-            </div>
-          </a>
-          <a
-            href="https://www.roblox.com/games/9264596435/Idle-Heroes-Simulator"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="block no-underline border border-black/30 dark:border-white/25 hover:bg-black hover:text-white hover:opacity-90 transition-opacity duration-150"
-          >
-            <div class="w-full aspect-[500/280] overflow-hidden border-b border-black/30 dark:border-white/25">
-              <img
-                src="/assets/games/idle-heroes-simulator.jpg"
-                alt="Idle Heroes Simulator thumbnail"
-                class="!w-full !h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div class="p-3">
-              <p class="font-semibold leading-tight text-base m-0">
-                Idle Heroes Simulator!
-              </p>
-              <p class="text-sm mt-1 m-0">Created 04/02/2022</p>
-              <p class="text-sm mt-1 m-0">Visits 40,382,777</p>
-            </div>
-          </a>
-          <a
-            href="https://www.roblox.com/games/5991118999/Mowing-Masters-Simulator"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="block no-underline border border-black/30 dark:border-white/25 hover:bg-black hover:text-white hover:opacity-90 transition-opacity duration-150"
-          >
-            <div class="w-full aspect-[500/280] overflow-hidden border-b border-black/30 dark:border-white/25">
-              <img
-                src="/assets/games/mowing-masters-simulator.jpg"
-                alt="Mowing Masters Simulator thumbnail"
-                class="!w-full !h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div class="p-3">
-              <p class="font-semibold leading-tight text-base m-0">
-                Mowing Masters! Simulator
-              </p>
-              <p class="text-sm mt-1 m-0">Created 11/23/2020</p>
-              <p class="text-sm mt-1 m-0">Visits 27,920,282</p>
-            </div>
-          </a>
-          <a
-            href="https://www.roblox.com/games/7147680787/Anime-Destruction-Simulator"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="block no-underline border border-black/30 dark:border-white/25 hover:bg-black hover:text-white hover:opacity-90 transition-opacity duration-150"
-          >
-            <div class="w-full aspect-[500/280] overflow-hidden border-b border-black/30 dark:border-white/25">
-              <img
-                src="/assets/games/anime-destruction-simulator.jpg"
-                alt="Anime Destruction Simulator thumbnail"
-                class="!w-full !h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div class="p-3">
-              <p class="font-semibold leading-tight text-base m-0">
-                Anime Destruction Simulator
-              </p>
-              <p class="text-sm mt-1 m-0">Created 07/24/2021</p>
-              <p class="text-sm mt-1 m-0">Visits 18,903,971</p>
-            </div>
-          </a>
-          <a
-            href="https://www.roblox.com/games/102004471989393/Make-a-Military-Army"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="block no-underline border border-black/30 dark:border-white/25 hover:bg-black hover:text-white hover:opacity-90 transition-opacity duration-150"
-          >
-            <div class="w-full aspect-[500/280] overflow-hidden border-b border-black/30 dark:border-white/25">
-              <img
-                src="/assets/games/make-a-military-army.jpg"
-                alt="Make a Military Army thumbnail"
-                class="!w-full !h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div class="p-3">
-              <p class="font-semibold leading-tight text-base m-0">
-                Make a Military Army!
-              </p>
-              <p class="text-sm mt-1 m-0">Created 09/18/2025</p>
-              <p class="text-sm mt-1 m-0">Visits 4,364,561</p>
-            </div>
-          </a>
-        </div>
-      </div>
-    {% endcall %}
-    {% call fieldset("cat ~/friends.md") %}
-      <article>
-        cool friends
-        <ul class="friends-list">
-          <li><a class="friend-link" data-note="the research goat" href="https://matheus.wiki/" target="_blank" rel="noopener noreferrer">Matheus Maldaner</a></li>
-          <li><a class="friend-link" data-note="7 brew demon" href="https://www.awangyisu.com/" target="_blank" rel="noopener noreferrer">Alexander Wang</a></li>
-          <li><a class="friend-link" data-note="fellow intern ambassador nvidia arc" href="https://www.dvidal.dev/" target="_blank" rel="noopener noreferrer">Dylan Vidal</a></li>
-          <li><a class="friend-link" data-note="my sase mentor" href="https://tl-portfolio-ebon.vercel.app/" target="_blank" rel="noopener noreferrer">Thuy Le</a></li>
-          <li><a class="friend-link" data-note="VR + robotics tinkerer" href="http://hcmack.github.io/" target="_blank" rel="noopener noreferrer">Henry Mack</a></li>
-          <li><a class="friend-link" data-note="future f1 driver" href="https://www.christineyewonkim.com/" target="_blank" rel="noopener noreferrer">Christine Kim</a></li>
-          <li><a class="friend-link" data-note="my favorite gt hackathon organizer" href="https://aamogh.vercel.app/" target="_blank" rel="noopener noreferrer">Aamogh Sawant</a></li>
-          <li><a class="friend-link" data-note="minecraft fanatic" href="https://www.stanleyke.us/" target="_blank" rel="noopener noreferrer">Stanley Ke</a></li>
-          <li><a class="friend-link" data-note="big apple" href="https://laylale.dev/" target="_blank" rel="noopener noreferrer">Layla Le</a></li>
-        </ul>
-      </article>
-    {% endcall %}
-    {% call fieldset("cat ~/links.md") %}
-      <article>
-        links!
-        <ul>
-          <li><a href="mailto:andrew.vu@ufl.edu">Email</a></li>
-          <li><a href="https://github.com/adv-andrew" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-          <li><a href="https://www.linkedin.com/in/adv-andrew-d-vu/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-          <li><a href="https://devpost.com/adv-andrew" target="_blank" rel="noopener noreferrer">Devpost</a></li>
-          <li><a href="https://x.com/iStaridium" target="_blank" rel="noopener noreferrer">X</a></li>
-          <li><a href="https://www.roblox.com/users/96753261/profile" target="_blank" rel="noopener noreferrer">Roblox</a></li>
-        </ul>
-      </article>
-    {% endcall %}
-  </div>
-
-  <div class="experience-gallery" id="experience-gallery-adtran" aria-hidden="true">
-    <div class="experience-gallery-panel" role="dialog" aria-modal="true" aria-labelledby="experience-gallery-adtran-title">
-      <div class="experience-gallery-head">
-        <div>
-          <h3 id="experience-gallery-adtran-title">Adtran Pictures</h3>
-          <p>a few snapshots from the internship arc</p>
-        </div>
-        <button type="button" class="experience-gallery-close" data-close-gallery="adtran">
-          x
-        </button>
-      </div>
-      <div class="experience-gallery-grid">
-        <figure class="experience-gallery-item">
-          <img src="/assets/experience/pics_adtran/company event pickleball.JPG" alt="Company event pickleball" loading="lazy" />
-          <p>company event pickleball</p>
-        </figure>
-        <figure class="experience-gallery-item">
-          <img src="/assets/experience/pics_adtran/first day of work.jpeg" alt="First day of work" loading="lazy" />
-          <p>first day of work</p>
-        </figure>
-        <figure class="experience-gallery-item">
-          <img src="/assets/experience/pics_adtran/first time in heaven.JPG" alt="First time in heaven" loading="lazy" />
-          <p>first time in heaven</p>
-        </figure>
-        <figure class="experience-gallery-item">
-          <img src="/assets/experience/pics_adtran/intern event baseball game.JPG" alt="Intern event baseball game" loading="lazy" />
-          <p>intern event baseball game</p>
-        </figure>
-        <figure class="experience-gallery-item">
-          <img src="/assets/experience/pics_adtran/my amazing team.JPG" alt="My amazing team" loading="lazy" />
-          <p>my amazing team</p>
-        </figure>
-        <figure class="experience-gallery-item">
-          <img src="/assets/experience/pics_adtran/my cubicle.JPG" alt="My cubicle" loading="lazy" />
-          <p>my cubicle</p>
-        </figure>
-        <figure class="experience-gallery-item">
-          <img src="/assets/experience/pics_adtran/my second home after work.JPG" alt="My second home after work" loading="lazy" />
-          <p>my second home after work</p>
-        </figure>
-        <figure class="experience-gallery-item">
-          <img src="/assets/experience/pics_adtran/weekend trip to south carolina.jpeg" alt="Weekend trip to south carolina" loading="lazy" />
-          <p>weekend trip to south carolina</p>
-        </figure>
-        <figure class="experience-gallery-item">
-          <img src="/assets/experience/pics_adtran/weekend trip to south carolina 2.jpeg" alt="Weekend trip to south carolina 2" loading="lazy" />
-          <p>weekend trip to south carolina 2</p>
-        </figure>
+      <div class="home-mini-card flex items-center gap-2">
+        <span class="text-xl"></span>
+        <p class="home-mini-value text-sm">Movies</p>
       </div>
     </div>
   </div>
-
-  <div class="experience-gallery" id="experience-gallery-gatorai" aria-hidden="true">
-    <div class="experience-gallery-panel" role="dialog" aria-modal="true" aria-labelledby="experience-gallery-gatorai-title">
-      <div class="experience-gallery-head">
-        <div>
-          <h3 id="experience-gallery-gatorai-title">GatorAI Pictures</h3>
-          <p>club moments, events, and leadership arc snapshots</p>
+  {% endcall %}
+  <!-- education -->
+  {% call fieldset("cat ~/education.md") %}
+  <div class="text-lg">
+    <p class="m-0">where I study</p>
+    <div class="flex flex-col gap-4 mt-4">
+      <div class="edu-card">
+        <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
+          <div>
+            <p class="font-semibold text-base">Chandigarh University</p>
+            <p class="text-sm mt-1">Bachelor of Engineering, Computer Science and Engineering</p>
+          </div>
+          <p class="text-sm">Expected June 2028</p>
         </div>
-        <button type="button" class="experience-gallery-close" data-close-gallery="gatorai">
-          x
-        </button>
-      </div>
-      <div class="experience-gallery-grid">
-        <figure class="experience-gallery-item">
-          <img src="/assets/experience/pics_gatorai/christmas party.png" alt="Christmas party" loading="lazy" />
-          <p>christmas party</p>
-        </figure>
-        <figure class="experience-gallery-item">
-          <img src="/assets/experience/pics_gatorai/elected eboard.png" alt="Elected eboard" loading="lazy" />
-          <p>elected eboard</p>
-        </figure>
-        <figure class="experience-gallery-item">
-          <img src="/assets/experience/pics_gatorai/first gbm hosted 250 attendance.png" alt="First gbm hosted 250 attendance" loading="lazy" />
-          <p>first gbm hosted 250 attendance</p>
-        </figure>
-        <figure class="experience-gallery-item">
-          <img src="/assets/experience/pics_gatorai/hosted the first gatorai symposium.png" alt="Hosted the first gatorai symposium" loading="lazy" />
-          <p>hosted the first gatorai symposium</p>
-        </figure>
-        <figure class="experience-gallery-item">
-          <img src="/assets/experience/pics_gatorai/machine learning mondaysss.png" alt="Machine learning mondaysss" loading="lazy" />
-          <p>machine learning mondaysss</p>
-        </figure>
-        <figure class="experience-gallery-item">
-          <img src="/assets/experience/pics_gatorai/tabling before the storm.png" alt="Tabling before the storm" loading="lazy" />
-          <p>tabling before the storm</p>
-        </figure>
+        <p class="text-xs opacity-60 mt-1">Mohali, Punjab | CGPA: 7.27</p>
+        <div class="mt-3 pt-3 border-t border-black/10 dark:border-white/10">
+          <p class="text-xs font-semibold mb-2" style="color: var(--site-muted);">RELEVANT COURSEWORK</p>
+          <p class="text-sm">Data Structures & Algorithms, Machine Learning, Linear Algebra, Calculus, Probability &
+            Statistics</p>
+        </div>
+        <div class="mt-3 pt-3 border-t border-black/10 dark:border-white/10">
+          <p class="text-xs font-semibold mb-2" style="color: var(--site-muted);">CERTIFICATIONS</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="cert-chip">IBM Python for Data Science & AI</span>
+            <span class="cert-chip">Google IT Professional</span>
+            <span class="cert-chip">Meta Python Data Analytics</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+  {% endcall %}
+  <!-- experience -->
+  {% call fieldset("cat ~/experience.md") %}
+  <div id="experience-section" class="text-lg">
+    <p class="m-0">work experience</p>
+    <div class="flex flex-col gap-4 mt-4">
+      <div class="experience-card border border-black/30 dark:border-white/25 p-3">
+        <span class="favorite-star" aria-hidden="true"></span>
+        <div class="min-w-0 flex-1">
+          <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
+            <div>
+              <p class="font-semibold text-base m-0">AICTE – Edunet Foundation (IBM-Certified)</p>
+              <p class="text-sm m-0">AI/ML Research Intern</p>
+            </div>
+            <p class="text-sm m-0">Jan 2026 – Mar 2026</p>
+          </div>
+          <p class="text-xs opacity-60 mt-1 m-0">Remote</p>
+          <ul class="text-sm mt-2 mb-0 pl-4 flex flex-col gap-1">
+            <li>Engineered an AI Resume & Portfolio Builder using Python, NLP, and deep learning, improving
+              keyword-to-job-description matching accuracy by 85%</li>
+            <li>Built an end-to-end ML data pipeline processing 10,000+ resume records with 98% data quality scores</li>
+            <li>Designed and deployed FastAPI REST endpoints handling 500+ daily analysis requests with sub-300ms
+              response time</li>
+            <li>Applied TF-IDF, semantic similarity scoring, and NER techniques, boosting job relevance scores by 35%
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="experience-card border border-black/30 dark:border-white/25 p-3">
+        <div class="min-w-0 flex-1">
+          <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
+            <div>
+              <p class="font-semibold text-base m-0">Open Source</p>
+              <p class="text-sm m-0">Open Source Contributor</p>
+            </div>
+            <p class="text-sm m-0">Oct 2024 – Present</p>
+          </div>
+          <p class="text-xs opacity-60 mt-1 m-0">Remote</p>
+          <ul class="text-sm mt-2 mb-0 pl-4 flex flex-col gap-1">
+            <li>Resolved React.js frontend bottlenecks with lazy loading and code splitting, reducing page load time by
+              45% across 3+ repositories</li>
+            <li>Refactored Node.js database query patterns and introduced connection pooling, improving data sync speed
+              by 50%</li>
+            <li>Authored technical documentation for a voice journaling AI framework, increasing community contributions
+              by 30%</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endcall %}
+  <!-- publications -->
+  {% call fieldset("cat ~/publications.md") %}
+  <div class="text-lg">
+    <p class="m-0">research publications</p>
+    <div class="flex flex-col gap-4 mt-4">
+      <div class="pub-card">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="pub-badge">IEEE (Under Review)</span>
+          <span class="pub-badge">Apr 2026</span>
+        </div>
+        <p class="font-semibold text-base">Secure NLP Architecture Using Quantum Public Key Resilient Cryptography</p>
+        <p class="text-sm mt-1" style="color: var(--site-muted);">Lead Author</p>
+        <ul class="text-sm mt-2 mb-0 pl-4 flex flex-col gap-1">
+          <li>Proposed a secure architecture for NLP pipelines integrating quantum-resilient public key cryptographic
+            schemes</li>
+          <li>Analyzed lattice-based cryptographic primitives and their computational trade-offs for NLP system
+            components</li>
+          <li>Demonstrated methodology spanning literature review, system design, algorithmic analysis, and security
+            evaluation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% endcall %}
+  <!-- projects -->
+  {% call fieldset("ls ~/projects.md") %}
+  <div id="projects-section" class="text-lg">
+    <p class="m-0">things i've built</p>
+    <div class="flex flex-col gap-4 mt-4">
+      <article class="project-card border border-black/30 dark:border-white/25 p-3">
+        <span class="favorite-star" aria-hidden="true"></span>
+        <div class="project-copy flex flex-col gap-2 min-w-0 justify-start">
+          <div>
+            <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
+              <p class="font-semibold text-base m-0">Medscript AI</p>
+              <p class="text-sm m-0" style="color: var(--site-muted);">May 2026</p>
+            </div>
+            <div class="flex flex-wrap gap-1 mt-1">
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">PyTorch</span>
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">FastAPI</span>
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">Docker</span>
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">Vite</span>
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">TypeScript</span>
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">BiomedBERT</span>
+            </div>
+            <ul class="text-sm mt-2 mb-0 pl-4 flex flex-col gap-1">
+              <li>Full-stack clinical document intelligence platform using Swin Transformer + BiLSTM-CTC and BiomedBERT
+                NER pipeline — 98.2% entity extraction accuracy on Indian medical handwriting</li>
+              <li>HIPAA-compliant REST API with JWT OAuth 2.0 and 5-tier RBAC, increasing EHR integration adoption by
+                60%</li>
+              <li>Real-time 3D interactive frontend using React, Three.js, GSAP, and Framer Motion with
+                human-in-the-loop feedback — sub-200ms inference loop</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card border border-black/30 dark:border-white/25 p-3">
+        <div class="project-copy flex flex-col gap-2 min-w-0 justify-start">
+          <div>
+            <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
+              <p class="font-semibold text-base m-0">FinoraX</p>
+              <p class="text-sm m-0" style="color: var(--site-muted);">Aug 2025</p>
+            </div>
+            <div class="flex flex-wrap gap-1 mt-1">
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">React</span>
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">Vite</span>
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">TypeScript</span>
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">PostgreSQL</span>
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">Tailwind CSS</span>
+              <span class="skill-chip" style="font-size: 0.66rem; height: 1.25rem;">Supabase</span>
+            </div>
+            <ul class="text-sm mt-2 mb-0 pl-4 flex flex-col gap-1">
+              <li>Cloud-native finance platform on Supabase supporting 10,000+ concurrent users with 40% faster data
+                retrieval</li>
+              <li>ML-based financial forecasting pipeline processing 50,000+ monthly transactions with automated anomaly
+                detection</li>
+              <li>High-concurrency REST API with sub-200ms response times, containerized with Docker for cloud
+                deployment</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+  {% endcall %}
+  <!-- skills -->
+  {% call fieldset("cat ~/skills.md") %}
+  <div class="text-lg">
+    <p class="m-0">technical skills</p>
+    <div class="flex flex-col gap-4 mt-4">
+      <div class="home-mini-card">
+        <p class="home-mini-label">Languages</p>
+        <div class="flex flex-wrap gap-2 mt-2">
+          <span class="skill-chip">Python</span>
+          <span class="skill-chip">JavaScript</span>
+          <span class="skill-chip">TypeScript</span>
+          <span class="skill-chip">SQL</span>
+          <span class="skill-chip">C</span>
+          <span class="skill-chip">C++</span>
+          <span class="skill-chip">Java</span>
+          <span class="skill-chip">HTML/CSS</span>
+        </div>
+      </div>
+      <div class="home-mini-card">
+        <p class="home-mini-label">Frameworks & Libraries</p>
+        <div class="flex flex-wrap gap-2 mt-2">
+          <span class="skill-chip">PyTorch</span>
+          <span class="skill-chip">TensorFlow</span>
+          <span class="skill-chip">Scikit-learn</span>
+          <span class="skill-chip">NumPy</span>
+          <span class="skill-chip">Pandas</span>
+          <span class="skill-chip">Node.js</span>
+          <span class="skill-chip">Express.js</span>
+          <span class="skill-chip">Next.js</span>
+          <span class="skill-chip">React.js</span>
+          <span class="skill-chip">FastAPI</span>
+        </div>
+      </div>
+      <div class="home-mini-card">
+        <p class="home-mini-label">Research Areas</p>
+        <div class="flex flex-wrap gap-2 mt-2">
+          <span class="skill-chip">Natural Language Processing</span>
+          <span class="skill-chip">Post-Quantum Cryptography</span>
+          <span class="skill-chip">Sentiment Analysis</span>
+          <span class="skill-chip">Deep Learning</span>
+          <span class="skill-chip">Data Mining</span>
+          <span class="skill-chip">Algorithm Design</span>
+        </div>
+      </div>
+      <div class="home-mini-card">
+        <p class="home-mini-label">Tools & Technologies</p>
+        <div class="flex flex-wrap gap-2 mt-2">
+          <span class="skill-chip">Apache Kafka</span>
+          <span class="skill-chip">Docker</span>
+          <span class="skill-chip">AWS</span>
+          <span class="skill-chip">GCP</span>
+          <span class="skill-chip">Postman</span>
+          <span class="skill-chip">PostgreSQL</span>
+          <span class="skill-chip">Linux</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endcall %}
+  <!-- links -->
+  {% call fieldset("cat ~/links.md") %}
+  <article>
+    links
+    <ul>
+      <li><a href="mailto:navketan17@gmail.com">Email</a></li>
+      <li><a href="https://github.com/nvk170405" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      <li><a href="https://linkedin.com/in/navketansingh" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+      <li><a href="https://x.com/singh_navk42168" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
+      <li><a href="https://www.instagram.com/nav.devs17" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+    </ul>
+  </article>
+  {% endcall %}
+</div>
 {% endblock %}
-
-{% block scripts %}
-  <script>
-    (() => {
-      const openButtons = document.querySelectorAll("[data-open-gallery]");
-      const closeButtons = document.querySelectorAll("[data-close-gallery]");
-
-      function getGallery(name) {
-        return document.getElementById(`experience-gallery-${name}`);
-      }
-
-      function setGalleryOpen(name, isOpen) {
-        const gallery = getGallery(name);
-        if (!gallery) {
-          return;
-        }
-
-        gallery.classList.toggle("is-open", isOpen);
-        gallery.setAttribute("aria-hidden", isOpen ? "false" : "true");
-        document.body.style.overflow = isOpen ? "hidden" : "";
-      }
-
-      openButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          setGalleryOpen(button.dataset.openGallery, true);
-        });
-      });
-
-      closeButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          setGalleryOpen(button.dataset.closeGallery, false);
-        });
-      });
-
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-          document.querySelectorAll(".experience-gallery.is-open").forEach((gallery) => {
-            gallery.classList.remove("is-open");
-            gallery.setAttribute("aria-hidden", "true");
-          });
-          document.body.style.overflow = "";
-        }
-      });
-
-      document.querySelectorAll(".experience-gallery").forEach((gallery) => {
-        gallery.addEventListener("click", (event) => {
-          if (event.target === gallery) {
-            gallery.classList.remove("is-open");
-            gallery.setAttribute("aria-hidden", "true");
-            document.body.style.overflow = "";
-          }
-        });
-      });
-
-      const friendLinks = document.querySelectorAll(".friend-link[data-note]");
-      const canFriendHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-      if (friendLinks.length && canFriendHover) {
-        const note = document.createElement("div");
-        note.className = "friend-note";
-        note.setAttribute("role", "tooltip");
-        document.body.appendChild(note);
-
-        let active = null;
-
-        function place(x, y) {
-          const offset = 14;
-          const rect = note.getBoundingClientRect();
-          const vw = window.innerWidth;
-          const vh = window.innerHeight;
-          let nx = x + offset;
-          let ny = y + offset;
-          if (nx + rect.width + 8 > vw) {
-            nx = x - rect.width - offset;
-          }
-          if (ny + rect.height + 8 > vh) {
-            ny = y - rect.height - offset;
-          }
-          note.style.left = `${Math.max(8, nx)}px`;
-          note.style.top = `${Math.max(8, ny)}px`;
-        }
-
-        friendLinks.forEach((link) => {
-          link.addEventListener("mouseenter", (event) => {
-            active = link;
-            note.textContent = link.dataset.note || "";
-            note.classList.add("is-visible");
-            place(event.clientX, event.clientY);
-          });
-          link.addEventListener("mousemove", (event) => {
-            if (active === link) {
-              place(event.clientX, event.clientY);
-            }
-          });
-          link.addEventListener("mouseleave", () => {
-            if (active === link) {
-              active = null;
-              note.classList.remove("is-visible");
-            }
-          });
-        });
-      }
-    })();
-  </script>
-{% endblock %}
-
-

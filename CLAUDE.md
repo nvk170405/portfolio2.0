@@ -1,4 +1,4 @@
-# Portfolio Website - andrewvu.me
+# Portfolio Website - navketansingh.dev
 
 Static site generator for personal portfolio using Python (Jinja2, Mistune) and Tailwind CSS.
 
@@ -8,7 +8,6 @@ Static site generator for personal portfolio using Python (Jinja2, Mistune) and 
 - After rebuilding, tell the user to refresh the local preview and what page to check.
 - Prefer editing templates in `src/templates/` instead of touching built files in `dist/`.
 - Keep new copy understated and natural. Avoid resume-speak and overhyped wording.
-- For random pages, prefer playful interactive ideas, but keep the implementation easy to extend.
 
 ## Build Commands
 
